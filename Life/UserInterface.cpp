@@ -38,8 +38,18 @@ UserInterface::~UserInterface()
     ImGui::DestroyContext();
 }
 
+void UserInterface::SetSimulation(std::unique_ptr<ISimulation> simulation)
+{
+    m_simulation = std::move(simulation);
+}
+
 void UserInterface::Render() const
 {
+    if (m_simulation)
+    {
+        m_simulation->Tick();
+    }
+
     // Start ImGui frame
     ImGui_ImplDX11_NewFrame();
     ImGui_ImplWin32_NewFrame();
@@ -49,63 +59,44 @@ void UserInterface::Render() const
     // Our UI
     // --------------------------------------------------------
 
-    ImGui::Begin("Test Window");
+    ImGui::Begin("Conway's Game of Life");
 
-    ImGui::Text("Hello from Dear ImGui!");
-
-    ImGui::Separator();
-
-    static int number = 42;
-
-    ImGui::InputInt("Number", &number);
-
-    ImGui::SliderInt(
-        "Slider",
-        &number,
-        0,
-        100);
-
-    static bool checkbox = false;
-
-    ImGui::Checkbox(
-        "Enable something",
-        &checkbox);
-
-    static float value = 0.5f;
-
-    ImGui::SliderFloat(
-        "Value",
-        &value,
-        0.0f,
-        1.0f);
-
-    if (ImGui::Button("Click me"))
+    if (m_simulation)
     {
-        number++;
+        Coord size = m_simulation->Size();
+
+        constexpr float cellSize = 20.0f;
+
+        ImDrawList* drawList = ImGui::GetWindowDrawList();
+
+        ImVec2 origin = ImGui::GetCursorScreenPos();
+
+        for (int y = 0; y < size.y; ++y)
+        {
+            for (int x = 0; x < size.x; ++x)
+            {
+                ImVec2 min(
+                    origin.x + x * cellSize,
+                    origin.y + y * cellSize);
+
+                ImVec2 max(
+                    min.x + cellSize,
+                    min.y + cellSize);
+
+                ImU32 colour = m_simulation->Get({ x, y })
+                    ? IM_COL32(0, 0, 0, 255)       // true = black
+                    : IM_COL32(255, 255, 255, 255); // false = white
+
+                drawList->AddRectFilled(min, max, colour);
+
+                // Optional border around each cell
+                drawList->AddRect(min, max, IM_COL32(128, 128, 128, 255));
+            }
+        }
+
+        // Reserve space so subsequent ImGui widgets don't overlap the grid
+        ImGui::Dummy(ImVec2(10 * cellSize, 10 * cellSize));
     }
-
-    ImGui::SameLine();
-
-    if (ImGui::Button("Reset"))
-    {
-        number = 0;
-        value = 0.5f;
-        checkbox = false;
-    }
-
-    ImGui::Separator();
-
-    ImGui::Text(
-        "Number = %d",
-        number);
-
-    ImGui::Text(
-        "Checkbox = %s",
-        checkbox ? "true" : "false");
-
-    ImGui::Text(
-        "Value = %.2f",
-        value);
 
     ImGui::End();
 

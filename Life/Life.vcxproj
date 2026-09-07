@@ -149,11 +149,15 @@
   <ItemGroup>
     <ClCompile Include="D3D11Framework.cpp" />
     <ClCompile Include="Life.cpp" />
+    <ClCompile Include="Simulation.cpp" />
     <ClCompile Include="UserInterface.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="D3D11Framework.h" />
+    <ClInclude Include="Grid.h" />
     <ClInclude Include="ID3D11FrameworkExtension.h" />
+    <ClInclude Include="ISimulation.h" />
+    <ClInclude Include="Simulation.h" />
     <ClInclude Include="UserInterface.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

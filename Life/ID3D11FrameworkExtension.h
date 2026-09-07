@@ -1,5 +1,6 @@
 #pragma once
 
+#define NOMINMAX
 #include <d3d11.h>
 
 struct D3D11Internals

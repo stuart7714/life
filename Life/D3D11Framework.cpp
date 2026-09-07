@@ -24,7 +24,7 @@ D3D11Framework::D3D11Framework()
 
     m_hwnd = ::CreateWindowW(
         m_wc.lpszClassName,
-        L"Dear ImGui Test",
+        L"D3D11 Window",
         WS_OVERLAPPEDWINDOW,
         100,
         100,
