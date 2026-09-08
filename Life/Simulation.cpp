@@ -12,9 +12,11 @@ void Simulation::Tick()
 {
 	if (!m_running)
 	{
+		// The simulation is not running automatically.
 		return;
 	}
 
+	// Check to see if we need to update the simulation according to a timer.
 	auto currentTime = std::chrono::steady_clock::now();
 	std::chrono::duration<double> elapsed = currentTime - m_startTime;
 	if (elapsed.count() > m_updateInterval)
@@ -36,6 +38,7 @@ void Simulation::New()
 
 void Simulation::Load(const std::filesystem::path& pathname)
 {
+	// Load the state of the simulation from a JSON file listing the coordinates of all living cells.
 	std::ifstream file(pathname);
 	if (!file)
 	{
@@ -55,6 +58,7 @@ void Simulation::Load(const std::filesystem::path& pathname)
 
 void Simulation::Save(const std::filesystem::path& pathname)
 {
+	// Save the state of the simulation to a JSON file listing the coordinates of all living cells.
 	Coords coordList;
 
 	for (int y = 0; y < MaxY; y++)
@@ -116,6 +120,8 @@ void Simulation::Set(const Coord& coord, bool value)
 
 int Simulation::CountNeighbours(const Coord& centre) const
 {
+	// Find the dimensions of the 3x3 template around the centre.
+	// Ensure we handle the edges of the grid.
 	Coord min = (centre - 1).max(Coord(0, 0));
 	Coord max = (centre + 1).min(Coord(MaxX - 1, MaxY - 1));
 
@@ -137,6 +143,7 @@ int Simulation::CountNeighbours(const Coord& centre) const
 
 void Simulation::Update()
 {
+	// Count the neighbours of each cell.
 	Grid<int, MaxX, MaxY> counts;
 	for (int y = 0; y < MaxY; y++)
 	{
@@ -147,6 +154,7 @@ void Simulation::Update()
 		}
 	}
 
+	// Apply the rules of the Game of Life.
 	for (int y = 0; y < MaxY; y++)
 	{
 		for (int x = 0; x < MaxX; x++)
