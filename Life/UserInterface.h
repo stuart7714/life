@@ -13,11 +13,19 @@ public:
 
 	void SetSimulation(std::unique_ptr<ISimulation> simulation);
 
+private:
+	std::unique_ptr<ISimulation> m_simulation;
+
 	// ID3D11FrameworkExtension
 	virtual void Render() const override;
 	virtual void Present() const override;
 	virtual bool ProcessEvent(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) const override;
 
-private:
-	std::unique_ptr<ISimulation> m_simulation;
+	void RenderFileControls(bool isRunning) const;
+	void RenderPlaybackControls(bool isRunning) const;
+	void RenderControls() const;
+	void RenderGrid() const;
+
+	std::optional<std::filesystem::path> OpenFileDialog() const;
+	std::optional<std::filesystem::path> SaveFileDialog() const;
 };

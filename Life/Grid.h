@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <array>
+#include <nlohmann/json.hpp>
 
 struct Coord
 {
@@ -29,6 +30,15 @@ struct Coord
 	}
 };
 
+NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(Coord, x, y)
+
+struct Coords
+{
+	std::vector<Coord> m_coords;
+};
+
+NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(Coords, m_coords)
+
 template<typename T, size_t MaxX, size_t MaxY>
 class Grid
 {
@@ -40,6 +50,10 @@ public:
 	T Get(const Coord& coord) const
 	{
 		return m_elements[coord.y][coord.x];
+	}
+	void Reset()
+	{
+		m_elements = {};
 	}
 private:
 	std::array<std::array<T, MaxX>, MaxY> m_elements{};

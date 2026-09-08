@@ -13,15 +13,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int)
 
         std::unique_ptr<UserInterface> userInterface = std::make_unique<UserInterface>(internals);
 
-        std::vector<Coord> coords = {
-            {10,10},
-            {11,10},
-            {11,9},
-            {11,8},
-            {12,8},
-            {12,7},
-            {13,7} };
-        userInterface->SetSimulation(std::make_unique<Simulation>(coords, 1.0));
+        userInterface->SetSimulation(std::make_unique<Simulation>(0.33));
 
         framework.SetExtension(std::move(userInterface));
         framework.EventLoop();
