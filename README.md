@@ -5,7 +5,7 @@
 
 A grid of cells is simulated from an initial state such that the cells live and die according to the number of neighbouring cells.
 
-The user draws or loads an initial state and begins the simulation. The users views the cells graphically on a grid and watches as old cells die and new cells are born.
+The user draws or loads an initial state and begins the simulation. The user views the cells graphically on a grid and watches as old cells die and new cells are born.
 
 The user interface contains a number of buttons:
 
