@@ -1,5 +1,9 @@
 # life
-[Conway's Game of Life](https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life) written in C++ for programming practice
+[Conway's Game of Life](https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life) written in C++ for programming practice.
+
+Click on the short video to watch:
+
+[![Watch the video](https://img.youtube.com/vi/nSqy0qOdlNc/maxresdefault.jpg)](https://youtu.be/nSqy0qOdlNc)
 
 # Overview
 
