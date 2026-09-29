@@ -19,10 +19,10 @@ public:
 	virtual void New() = 0;
 
 	// Load a simulation state from the given file.
-	virtual void Load(const std::filesystem::path& pathname) = 0;
+	virtual bool Load(const std::filesystem::path& pathname) = 0;
 	
 	// Save the current simulation state to the given file.
-	virtual void Save(const std::filesystem::path& pathname) = 0;
+	virtual bool Save(const std::filesystem::path& pathname) = 0;
 	
 	// Play the simulation so it will continually move to the next state.
 	virtual void Play() = 0;

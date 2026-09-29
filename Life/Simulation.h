@@ -18,8 +18,8 @@ private:
 	// ISimulation interface implementation.
 	virtual void Tick() override;
 	virtual void New() override;
-	virtual void Load(const std::filesystem::path& pathname) override;
-	virtual void Save(const std::filesystem::path& pathname) override;
+	virtual bool Load(const std::filesystem::path& pathname) override;
+	virtual bool Save(const std::filesystem::path& pathname) override;
 	virtual void Play() override;
 	virtual void Stop() override;
 	virtual void Next() override;

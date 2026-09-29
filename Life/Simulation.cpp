@@ -36,27 +36,38 @@ void Simulation::New()
 	m_cells.Reset();
 }
 
-void Simulation::Load(const std::filesystem::path& pathname)
+bool Simulation::Load(const std::filesystem::path& pathname)
 {
 	// Load the state of the simulation from a JSON file listing the coordinates of all living cells.
 	std::ifstream file(pathname);
 	if (!file)
 	{
 		std::cerr << std::format("Failed to load simulation {}", pathname.string()) << std::endl;
+		return false;
 	}
 	std::string jsonString;
 	std::getline(file, jsonString);
 
-	Coords coordList = nlohmann::json::parse(jsonString).get<Coords>();
+	Coords coordList;
+	try
+	{
+		coordList = nlohmann::json::parse(jsonString).get<Coords>();
+	}
+	catch (const std::exception& e)
+	{
+		std::cerr << std::format("JSON parsing threw exception {} for {}", e.what(), pathname.string()) << std::endl;
+		return false;
+	}
 
 	m_cells.Reset();
 	for (const Coord& coord : coordList.m_coords)
 	{
 		m_cells.Set(coord, true);
 	}
+	return true;
 }
 
-void Simulation::Save(const std::filesystem::path& pathname)
+bool Simulation::Save(const std::filesystem::path& pathname)
 {
 	// Save the state of the simulation to a JSON file listing the coordinates of all living cells.
 	Coords coordList;
@@ -79,8 +90,10 @@ void Simulation::Save(const std::filesystem::path& pathname)
 	if (!file)
 	{
 		std::cerr << std::format("Failed to save simulation {}", pathname.string()) << std::endl;
+		return false;
 	}
 	file << jsonString;
+	return true;
 }
 
 void Simulation::Play()

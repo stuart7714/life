@@ -104,7 +104,10 @@ void UserInterface::RenderFileControls(bool isRunning) const
         std::optional<std::filesystem::path> pathname = OpenFileDialog();
         if (pathname)
         {
-            m_simulation->Load(*pathname);
+            if (!m_simulation->Load(*pathname))
+            {
+                ShowErrorMessageBox(std::format(L"Failed to load simulation {}", pathname->wstring()));
+            }
         }
     }
     ImGui::SameLine();
@@ -114,7 +117,10 @@ void UserInterface::RenderFileControls(bool isRunning) const
         std::optional<std::filesystem::path> pathname = SaveFileDialog();
         if (pathname)
         {
-            m_simulation->Save(*pathname);
+            if (!m_simulation->Save(*pathname))
+            {
+                ShowErrorMessageBox(std::format(L"Failed to save simulation {}", pathname->wstring()));
+            }
         }
     }
     ImGui::SameLine();
@@ -325,4 +331,14 @@ std::optional<std::filesystem::path> UserInterface::SaveFileDialog() const
     dialog->Release();
 
     return result;
+}
+
+void UserInterface::ShowErrorMessageBox(const std::wstring& text) const
+{
+    MessageBoxW(
+        nullptr,
+        text.c_str(),
+        L"Error",
+        MB_OK | MB_ICONERROR
+    );
 }
